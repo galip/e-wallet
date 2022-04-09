@@ -24,7 +24,7 @@ public class Wallet extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "wallet_seq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "wallet_seq", strategy = GenerationType.AUTO)
     @SequenceGenerator(name = "wallet_seq_generator", sequenceName = "wallet_seq")
     private Long id;
 

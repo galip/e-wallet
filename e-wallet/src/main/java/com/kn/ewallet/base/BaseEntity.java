@@ -1,6 +1,7 @@
 package com.kn.ewallet.base;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -17,12 +18,12 @@ public class BaseEntity implements Serializable {
     private String createdBy;
 
     @Column(name = "CREATED_DATE")
-    private String createdDate;
+    private Date createdDate;
 
     @Column(name = "MODIFIED_BY")
     private String modifiedBy;
 
     @Column(name = "MODIFIED_DATE")
-    private String modifiedDate;
+    private Date modifiedDate;
 
 }

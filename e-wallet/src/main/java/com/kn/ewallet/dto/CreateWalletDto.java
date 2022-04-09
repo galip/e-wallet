@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class WalletDto {
+public class CreateWalletDto {
 
     private Long id;
     private Long customerId;
@@ -16,7 +16,7 @@ public class WalletDto {
     private BigDecimal previousBalance;
     private String status;
     private Date createdDate;
-    private String createdBy;
-    private Date modifiedDate;
-    private String modifiedBy;
+    private String createdUser;
+    private Date updatedDate;
+    private String updatedUser;
 }

@@ -7,5 +7,7 @@ import com.kn.ewallet.model.Wallet;
 
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
+    
+    public Wallet findByCustomerIdAndStatus(Long customerId, String status);
 
 }

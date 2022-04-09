@@ -15,12 +15,29 @@ public class WalletMapper {
         if (wallets.isEmpty()) {
             return null;
         }
-        WalletDto walletDto = new WalletDto();
         return wallets.stream()
-                .map(w -> walletDto.setId(w.getId())
+                .map(w -> new WalletDto().setId(w.getId())
                         .setCustomerId(w.getCustomerId())
                         .setStatus(w.getStatus())
                         .setBalance(w.getBalance()))
                 .collect(Collectors.toList());
     }
+    
+    public static WalletDto convertToDto(Wallet wallet) {
+        if (wallet == null) {
+                return null;
+        }
+        WalletDto orderDto = new WalletDto();
+        orderDto.setId(wallet.getId());
+        orderDto.setCustomerId(wallet.getCustomerId());
+        orderDto.setBalance(wallet.getBalance());
+        orderDto.setPreviousBalance(wallet.getPreviousBalance());
+        orderDto.setStatus(wallet.getStatus());
+        orderDto.setCreatedBy(wallet.getCreatedBy());
+        orderDto.setCreatedDate(wallet.getCreatedDate());
+        orderDto.setModifiedDate(wallet.getModifiedDate());
+        orderDto.setModifiedBy(wallet.getModifiedBy());
+        return orderDto;
+
+}
 }
