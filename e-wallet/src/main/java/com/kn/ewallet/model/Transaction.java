@@ -33,6 +33,9 @@ public class Transaction extends BaseEntity {
     
     @Column(name = "RECEIVER_ID")
     private Long receiverId;
+    
+    @Column(name = "AMOUNT")
+    private BigDecimal amount;
 
     @Column(name = "SENDER_BALANCE")
     private BigDecimal senderBalance;

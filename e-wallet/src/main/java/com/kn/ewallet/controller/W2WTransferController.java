@@ -16,27 +16,32 @@ import com.kn.ewallet.exception.WalletBusinessException;
 import com.kn.ewallet.exception.WalletException;
 import com.kn.ewallet.mapper.TransactionMapper;
 import com.kn.ewallet.model.Transaction;
-import com.kn.ewallet.request.TransactionBySenderRequest;
+import com.kn.ewallet.request.W2WBySenderRequest;
+import com.kn.ewallet.request.W2WRequest;
 import com.kn.ewallet.response.TransactionResponse;
 import com.kn.ewallet.service.TransactionService;
-import com.kn.ewallet.validator.TransactionValidator;
+import com.kn.ewallet.service.W2WTransferService;
+import com.kn.ewallet.validator.W2WTransferValidator;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/transaction")
+@RequestMapping("/w2w")
 @RequiredArgsConstructor
-public class TransactionController {
+public class W2WTransferController {
 
     @Autowired
     TransactionService transactionService;
+    
+    @Autowired
+    W2WTransferService w2wTransferService;
 
     @GetMapping("/list")
     @ResponseBody
     public ResponseEntity<TransactionResponse> findAll() {
 
         TransactionResponse response = new TransactionResponse();
-        List<Transaction> transactions = transactionService.findAll();
+        List<Transaction> transactions = w2wTransferService.findAllW2W();
         response.setTransactions(TransactionMapper.convertToDto(transactions));
         response.setResult(ErrorCodes.success());
 
@@ -50,13 +55,26 @@ public class TransactionController {
      */
     @PostMapping("/bySenderId")
     @ResponseBody
-    public ResponseEntity<TransactionResponse> findBySenderId(@RequestBody TransactionBySenderRequest request)
+    public ResponseEntity<TransactionResponse> findBySenderId(@RequestBody W2WBySenderRequest request)
             throws WalletBusinessException {
-        TransactionValidator.validateByCustomerRequest(request);
+        W2WTransferValidator.validateW2WTransferBySenderRequest(request);
 
         TransactionResponse response = new TransactionResponse();
-        List<Transaction> transactions = transactionService.findBySenderId(request);
+        List<Transaction> transactions = w2wTransferService.findBySenderId(request);
         response.setTransactions(TransactionMapper.convertToDto(transactions));
+        response.setResult(ErrorCodes.success());
+
+        return ResponseEntity.ok(response);
+    }
+    
+    @PostMapping("/transfer")
+    @ResponseBody
+    public ResponseEntity<TransactionResponse> transfer(@RequestBody W2WRequest request)
+            throws WalletBusinessException {
+        W2WTransferValidator.validateW2WTransferBySenderRequest(request);
+
+        TransactionResponse response = new TransactionResponse();
+        w2wTransferService.w2wTransfer(request);
         response.setResult(ErrorCodes.success());
 
         return ResponseEntity.ok(response);

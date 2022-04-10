@@ -74,6 +74,7 @@ public class WalletServiceImpl implements WalletService {
         
         Transaction transaction = new Transaction();
         transaction.setSenderId(request.getCustomerId());
+        transaction.setAmount(request.getAmount());
         transaction.setSenderBalance(newBalance);
         transaction.setSenderPreviousBalance(balance);
         transaction.setToken(UUID.randomUUID().toString());
@@ -111,6 +112,7 @@ public class WalletServiceImpl implements WalletService {
         
         Transaction transaction = new Transaction();
         transaction.setSenderId(request.getCustomerId());
+        transaction.setAmount(request.getAmount());
         transaction.setSenderBalance(newBalance);
         transaction.setSenderPreviousBalance(balance);
         transaction.setToken(UUID.randomUUID().toString());

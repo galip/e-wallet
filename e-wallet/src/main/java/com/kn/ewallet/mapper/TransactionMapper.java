@@ -1,5 +1,6 @@
 package com.kn.ewallet.mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,10 +19,16 @@ public class TransactionMapper {
         return transactions.stream()
                 .map(t -> new TransactionDto().setId(t.getId())
                         .setSenderId(t.getSenderId())
+                        .setAmount(t.getAmount())
                         .setSenderBalance(t.getSenderBalance())
                         .setSenderPreviousBalance(t.getSenderPreviousBalance())
+                        .setReceiverId(t.getReceiverId())
+                        .setReceiverBalance(t.getReceiverBalance())
+                        .setReceiverPreviousBalance(t.getReceiverPreviousBalance())
                         .setType(t.getType())
-                        .setToken(t.getToken()))
+                        .setToken(t.getToken())
+                        .setCreatedBy(t.getCreatedBy())
+                        .setCreatedDate(new Date()))
                 .collect(Collectors.toList());
     }
 

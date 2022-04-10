@@ -12,7 +12,8 @@ public class TransactionDto {
 
     private Long id;
     private Long senderId;
-    private Long rceiverId;
+    private Long receiverId;
+    private BigDecimal amount;
     private BigDecimal senderBalance;
     private BigDecimal senderPreviousBalance;
     private BigDecimal receiverBalance;
@@ -21,6 +22,4 @@ public class TransactionDto {
     private String token;
     private Date createdDate;
     private String createdBy;
-    private Date modifiedDate;
-    private String modifiedBy;
 }

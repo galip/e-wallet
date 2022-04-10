@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kn.ewallet.exception.WalletBusinessException;
 import com.kn.ewallet.model.Transaction;
 import com.kn.ewallet.repository.TransactionRepository;
-import com.kn.ewallet.request.TransactionByCustomerRequest;
+import com.kn.ewallet.request.TransactionBySenderRequest;
 import com.kn.ewallet.service.TransactionService;
 
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findBySenderId(TransactionByCustomerRequest request) throws WalletBusinessException {
-        return transactionRepository.findBySenderId(request.getCustomerId());
+    public List<Transaction> findBySenderId(TransactionBySenderRequest request) throws WalletBusinessException {
+        return transactionRepository.findBySenderId(request.getSenderId());
     }
 }

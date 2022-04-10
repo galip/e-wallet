@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Data
-public class TransactionByCustomerRequest {
+public class TransactionBySenderRequest {
     
-    private Long customerId;
+    private Long senderId;
 }
