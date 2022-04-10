@@ -64,6 +64,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>ewallet</finalName>
 	</build>
 
 </project>
