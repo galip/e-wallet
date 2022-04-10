@@ -13,7 +13,6 @@ import com.kn.ewallet.constant.ErrorCode;
 import com.kn.ewallet.core.Status;
 import com.kn.ewallet.core.TransactionType;
 import com.kn.ewallet.exception.WalletBusinessException;
-import com.kn.ewallet.exception.WalletException;
 import com.kn.ewallet.model.Transaction;
 import com.kn.ewallet.model.Wallet;
 import com.kn.ewallet.repository.TransactionRepository;
@@ -33,7 +32,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Autowired
     WalletRepository walletRepository;
-    
+
     @Autowired
     TransactionRepository transactionRepository;
 
@@ -45,9 +44,9 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Wallet create(CreateWalletRequest request) throws WalletBusinessException {
         Wallet wallet = walletRepository.findByCustomerIdAndStatus(request.getCustomerId(), Status.ACTIVE.name());
-        if(wallet != null)
+        if (wallet != null)
             throw new WalletBusinessException(ErrorCode.WALLET_ALREADY_EXIST); // one customer can have only 1 wallet.
-                
+
         wallet = new Wallet();
         wallet.setCustomerId(request.getCustomerId());
         wallet.setBalance(BigDecimal.ZERO);
@@ -55,15 +54,15 @@ public class WalletServiceImpl implements WalletService {
         wallet.setStatus(Status.ACTIVE.name());
         wallet.setCreatedBy("create user");
         wallet.setCreatedDate(new Date());
-        
+
         return walletRepository.save(wallet);
     }
-    
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Wallet topUp(TopUpRequest request) throws WalletBusinessException {
         Wallet wallet = checkIfWalletExist(request.getCustomerId());
-        
+
         BigDecimal balance = wallet.getBalance();
         BigDecimal newBalance = balance.add(request.getAmount());
         wallet.setBalance(newBalance);
@@ -71,7 +70,7 @@ public class WalletServiceImpl implements WalletService {
         wallet.setModifiedBy("modified user");
         wallet.setModifiedDate(new Date());
         walletRepository.save(wallet);
-        
+
         Transaction transaction = new Transaction();
         transaction.setSenderId(request.getCustomerId());
         transaction.setAmount(request.getAmount());
@@ -82,14 +81,14 @@ public class WalletServiceImpl implements WalletService {
         transaction.setCreatedBy("created user");
         transaction.setCreatedDate(new Date());
         transactionRepository.save(transaction);
-        
+
         return wallet;
-        
+
     }
 
     private Wallet checkIfWalletExist(Long customerId) throws WalletBusinessException {
         Wallet wallet = walletRepository.findByCustomerIdAndStatus(customerId, Status.ACTIVE.name());
-        if(wallet == null)
+        if (wallet == null)
             throw new WalletBusinessException(ErrorCode.WALLET_NOT_FOUND);
         return wallet;
     }
@@ -98,18 +97,18 @@ public class WalletServiceImpl implements WalletService {
     @Transactional(rollbackFor = Exception.class)
     public Wallet withdraw(WithdrawRequest request) throws WalletBusinessException {
         Wallet wallet = checkIfWalletExist(request.getCustomerId());
-        
+
         BigDecimal balance = wallet.getBalance();
         BigDecimal newBalance = balance.subtract(request.getAmount());
-        
-        if(BigDecimal.ZERO.compareTo(newBalance) >= 0)
+
+        if (BigDecimal.ZERO.compareTo(newBalance) >= 0)
             throw new WalletBusinessException(ErrorCode.INSUFFICIENT_WALLET_BALANCE);
         wallet.setBalance(newBalance);
         wallet.setPreviousBalance(balance);
         wallet.setModifiedBy("modified user");
         wallet.setModifiedDate(new Date());
         walletRepository.save(wallet);
-        
+
         Transaction transaction = new Transaction();
         transaction.setSenderId(request.getCustomerId());
         transaction.setAmount(request.getAmount());
@@ -120,7 +119,7 @@ public class WalletServiceImpl implements WalletService {
         transaction.setCreatedBy("created user");
         transaction.setCreatedDate(new Date());
         transactionRepository.save(transaction);
-        
+
         return wallet;
     }
 }
