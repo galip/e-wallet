@@ -9,11 +9,11 @@ http://localhost:9090/swagger-ui/index.html
 http://localhost:9090/dev
 
 # Run docker
-# Dev;
+# Dev
 docker run -e "SPRING_PROFILES_ACTIVE=dev" -p 9090:8080 galipp/ewallet
-# Test;
+# Test
 docker run -e "SPRING_PROFILES_ACTIVE=test" -p 9091:8081 galipp/ewallet
-# Prod;
+# Prod
 docker run -e "SPRING_PROFILES_ACTIVE=prod" -p 9092:8082 galipp/ewallet
 # H2 for DEV
 http://localhost:9090/h2-console
