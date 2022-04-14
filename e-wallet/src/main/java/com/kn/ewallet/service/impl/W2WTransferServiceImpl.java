@@ -47,16 +47,16 @@ public class W2WTransferServiceImpl implements W2WTransferService {
         }
         BigDecimal senderPreviousBalance = senderWallet.getBalance();
 
+        senderWallet.setPreviousBalance(senderPreviousBalance);
+        senderWallet.setBalance(senderNewBalance);
+        senderWallet.setModifiedBy("modified user");
+        senderWallet.setModifiedDate(new Date());
+        
         BigDecimal receiverNewBalance = receiverWallet.getBalance().add(request.getAmount());
         BigDecimal receiverPreviousBalance = receiverWallet.getBalance();
 
-        senderWallet.setPreviousBalance(senderWallet.getBalance());
-        senderWallet.setBalance(senderPreviousBalance);
-        senderWallet.setModifiedBy("modified user");
-        senderWallet.setModifiedDate(new Date());
-
-        receiverWallet.setPreviousBalance(receiverWallet.getBalance());
-        receiverWallet.setBalance(receiverPreviousBalance);
+        receiverWallet.setPreviousBalance(receiverPreviousBalance);
+        receiverWallet.setBalance(receiverNewBalance);
         receiverWallet.setModifiedBy("modified user");
         receiverWallet.setModifiedDate(new Date());
 
