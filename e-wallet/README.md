@@ -44,7 +44,7 @@ username: admin
 password: 12345678
 
 POST
-localhost:8080/authenticate
+http://localhost:8080/authenticate
 
 Request:
 {
