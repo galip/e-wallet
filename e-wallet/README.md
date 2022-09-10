@@ -43,7 +43,6 @@ In this project;
 username: admin
 password: 12345678
 
-POST
 http://localhost:8080/authenticate
 
 Request:
