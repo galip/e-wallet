@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 public class EWalletApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EWalletApplication.class, args);
+		 SpringApplication.run(EWalletApplication.class, args);
 	}
 
 }
