@@ -35,3 +35,25 @@ http://localhost:9092/h2-console
 db url : jdbc:h2:mem:ewallet-prod
 username:sa
 password:
+
+
+#Authentication
+Authentication for the specified user and password. 
+In this project; 
+username: admin
+password: 12345678
+
+POST
+localhost:8080/authenticate
+
+Request:
+{
+	"userName" : "admin",
+	"password" : "12345678"
+}
+
+You need to create the token like  in the below. This is sample response:
+
+{
+    "jwtResponse": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY2Mjg1Mzc4OCwiaWF0IjoxNjYyODM1Nzg4fQ.MlLLHMTwvhkClZI17b0HJQH-xvKgt1HvDMzQE3zMZdc"
+}
