@@ -23,7 +23,9 @@ import com.kn.ewallet.service.W2WTransferService;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,10 +45,11 @@ public class W2WTransferServiceImpl implements W2WTransferService {
         
         BigDecimal senderNewBalance = senderWallet.getBalance().subtract(request.getAmount());
         if (BigDecimal.ZERO.compareTo(senderNewBalance) >= 0) {
+        	log.warn("Insufficient wallet balance exception is occured. Sender wallet id: {}, receiver wallet id: {}", senderWallet.getId(), receiverWallet.getId());
             throw new WalletBusinessException(ErrorCode.INSUFFICIENT_WALLET_BALANCE);
         }
         BigDecimal senderPreviousBalance = senderWallet.getBalance();
-
+        
         senderWallet.setPreviousBalance(senderPreviousBalance);
         senderWallet.setBalance(senderNewBalance);
         senderWallet.setModifiedBy("modified user");
@@ -82,8 +85,10 @@ public class W2WTransferServiceImpl implements W2WTransferService {
 
     private Wallet checkIfWalletExist(Long customerId) throws WalletBusinessException {
         Wallet wallet = walletRepository.findByCustomerIdAndStatus(customerId, Status.ACTIVE.name());
-        if (wallet == null)
+        if (wallet == null) {
+        	log.error("Wallet not exists. Customer id: ", customerId);
             throw new WalletBusinessException(ErrorCode.WALLET_NOT_FOUND);
+        }
         return wallet;
     }
 

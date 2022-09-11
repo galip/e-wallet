@@ -14,6 +14,9 @@ import com.kn.ewallet.security.AuthenticationResponse;
 import com.kn.ewallet.security.JwtUtil;
 import com.kn.ewallet.service.UserSecurityService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class AuthenticationRestController {
 
@@ -31,6 +34,7 @@ public class AuthenticationRestController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()));
         } catch (BadCredentialsException ex) {
+        	log.error("Bad crediential exception: ", ex);
             throw new Exception("BAD_CREDIENTIAL", ex);
         }
         final UserDetails userDetails = userService.loadUserByUsername(request.getUserName());
