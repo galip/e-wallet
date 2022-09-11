@@ -24,7 +24,9 @@ import com.kn.ewallet.service.WalletService;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,8 +46,10 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Wallet create(CreateWalletRequest request) throws WalletBusinessException {
         Wallet wallet = walletRepository.findByCustomerIdAndStatus(request.getCustomerId(), Status.ACTIVE.name());
-        if (wallet != null)
-            throw new WalletBusinessException(ErrorCode.WALLET_ALREADY_EXIST); // one customer can have only 1 wallet.
+        if (wallet != null) { // one customer can have only 1 wallet.
+        	log.warn("Wallet already exists. Customer id: {}, wallet id: {}", request.getCustomerId(), wallet.getId());
+        	throw new WalletBusinessException(ErrorCode.WALLET_ALREADY_EXIST);
+        }
 
         wallet = new Wallet();
         wallet.setCustomerId(request.getCustomerId());
@@ -88,8 +92,11 @@ public class WalletServiceImpl implements WalletService {
 
     private Wallet checkIfWalletExist(Long customerId) throws WalletBusinessException {
         Wallet wallet = walletRepository.findByCustomerIdAndStatus(customerId, Status.ACTIVE.name());
-        if (wallet == null)
-            throw new WalletBusinessException(ErrorCode.WALLET_NOT_FOUND);
+        if (wallet == null) {
+        	log.error("Wallet not found. Customer id: ", customerId);
+        	throw new WalletBusinessException(ErrorCode.WALLET_NOT_FOUND);
+        }
+            
         return wallet;
     }
 
@@ -101,8 +108,11 @@ public class WalletServiceImpl implements WalletService {
         BigDecimal balance = wallet.getBalance();
         BigDecimal newBalance = balance.subtract(request.getAmount());
 
-        if (BigDecimal.ZERO.compareTo(newBalance) >= 0)
-            throw new WalletBusinessException(ErrorCode.INSUFFICIENT_WALLET_BALANCE);
+        if (BigDecimal.ZERO.compareTo(newBalance) >= 0) {
+        	log.warn("Insufficient wallet balance. Current balance: {}, withdraw request balance: {}", balance, request.getAmount());
+        	throw new WalletBusinessException(ErrorCode.INSUFFICIENT_WALLET_BALANCE);
+        }
+            
         wallet.setBalance(newBalance);
         wallet.setPreviousBalance(balance);
         wallet.setModifiedBy("modified user");
